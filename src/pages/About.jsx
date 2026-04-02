@@ -278,10 +278,15 @@ const About = () => {
             <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-600 via-secondary-600 to-primary-600 rounded-full"></div>
             
             {milestones.map((milestone, index) => (
-              <div key={milestone.year} className={`flex items-center mb-12 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'} justify-center`}>
+              <div key={milestone.year} className={`flex items-center mb-12 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'} justify-center relative`}>
                 {/* Content Card */}
                 <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8 md:order-2'}`}>
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group relative">
+                    {/* Mobile Timeline Dot - Positioned relative to card */}
+                    <div className="md:hidden absolute -top-6 left-1/2 transform -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg z-10">
+                      {milestone.year.slice(-2)}
+                    </div>
+                    
                     <div className="flex items-center justify-between mb-4">
                       <div className={`text-3xl md:text-4xl ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'}`}>
                         {milestone.icon}
@@ -304,7 +309,7 @@ const About = () => {
                   </div>
                 </div>
                 
-                {/* Timeline Dot - Centered on mobile */}
+                {/* Timeline Dot - Desktop only */}
                 <div className="hidden md:block w-2/12 flex justify-center">
                   <div className="relative">
                     <div className="w-16 h-16 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
@@ -312,11 +317,6 @@ const About = () => {
                     </div>
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full animate-ping opacity-20"></div>
                   </div>
-                </div>
-                
-                {/* Mobile Timeline Dot */}
-                <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg z-10">
-                  {milestone.year.slice(-2)}
                 </div>
                 
                 <div className="hidden md:block w-5/12"></div>
