@@ -16,6 +16,7 @@ import {
 const ImageSwappingGallery = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [showVideo, setShowVideo] = useState(false);
 
   const galleryImages = useMemo(() => [
     {
@@ -25,7 +26,8 @@ const ImageSwappingGallery = () => {
       icon: Shield,
       color: "from-blue-600 to-blue-800",
       features: ["ISO 9001:2015", "Documentation", "Audit Support", "Certification"],
-      bgGradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      bgGradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 2,
@@ -34,7 +36,8 @@ const ImageSwappingGallery = () => {
       icon: TrendingUp,
       color: "from-green-600 to-green-800",
       features: ["Lean Manufacturing", "Six Sigma", "Kaizen", "Continuous Improvement"],
-      bgGradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
+      bgGradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 3,
@@ -43,7 +46,8 @@ const ImageSwappingGallery = () => {
       icon: Users,
       color: "from-purple-600 to-purple-800",
       features: ["Internal Auditing", "Quality Tools", "Leadership", "Compliance"],
-      bgGradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+      bgGradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 4,
@@ -52,7 +56,8 @@ const ImageSwappingGallery = () => {
       icon: FileText,
       color: "from-orange-600 to-orange-800",
       features: ["PPAP Packages", "APQP", "SPC", "MSA Studies"],
-      bgGradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
+      bgGradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)",
+      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
     },
     {
       id: 5,
@@ -61,7 +66,8 @@ const ImageSwappingGallery = () => {
       icon: Award,
       color: "from-red-600 to-red-800",
       features: ["IATF 16949", "ISO 14001", "ISO 45001", "Industry Standards"],
-      bgGradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
+      bgGradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4"
     }
   ], []);
 
@@ -88,6 +94,15 @@ const ImageSwappingGallery = () => {
   const goToNext = () => {
     setCurrentImage((prev) => (prev + 1) % galleryImages.length);
     setIsAutoPlaying(false);
+  };
+
+  const handleLearnMore = () => {
+    setShowVideo(true);
+    setIsAutoPlaying(false);
+  };
+
+  const closeVideo = () => {
+    setShowVideo(false);
   };
 
   const currentImageData = galleryImages[currentImage];
@@ -220,6 +235,7 @@ const ImageSwappingGallery = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={handleLearnMore}
                   className="flex items-center space-x-1 md:space-x-2 bg-white text-gray-900 rounded-lg md:rounded-xl px-3 py-2 md:px-6 md:py-3 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg text-sm md:text-base"
                 >
                   <Play className="w-4 h-4 md:w-5 md:h-5" />
@@ -285,6 +301,61 @@ const ImageSwappingGallery = () => {
           <div className="w-3 h-3 border-2 border-white rounded-sm" />
         )}
       </motion.button>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {showVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={closeVideo}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-4xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={closeVideo}
+                className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white z-10 shadow-lg"
+                aria-label="Close video"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </motion.button>
+
+              {/* Video Player */}
+              <div className="w-full h-full flex items-center justify-center">
+                <video
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  controls
+                  src={currentImageData.videoUrl}
+                  title={`${currentImageData.title} Process Video`}
+                >
+                  <source src={currentImageData.videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+
+              {/* Video Info Overlay */}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                <h3 className="text-white text-xl font-bold mb-2">{currentImageData.title}</h3>
+                <p className="text-white/80 text-sm">{currentImageData.description}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
