@@ -7,7 +7,8 @@ import {
   Users, 
   FileText, 
   CheckCircle,
-  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
   Play
 } from 'lucide-react';
 
@@ -66,7 +67,20 @@ const ImageSwappingGallery = () => {
   }, [galleryImages.length]);
 
   const handleImageChange = (index) => {
+    console.log('Changing to image:', index);
     setCurrentImage(index);
+  };
+
+  const handlePrevious = () => {
+    const newIndex = (currentImage - 1 + galleryImages.length) % galleryImages.length;
+    console.log('Previous clicked, new index:', newIndex);
+    handleImageChange(newIndex);
+  };
+
+  const handleNext = () => {
+    const newIndex = (currentImage + 1) % galleryImages.length;
+    console.log('Next clicked, new index:', newIndex);
+    handleImageChange(newIndex);
   };
 
   const currentImageData = galleryImages[currentImage];
@@ -148,18 +162,18 @@ const ImageSwappingGallery = () => {
 
       {/* Side Navigation Arrows */}
       <button
-        onClick={() => handleImageChange((currentImage - 1 + galleryImages.length) % galleryImages.length)}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200"
+        onClick={handlePrevious}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200 z-20"
         aria-label="Previous image"
       >
-        <ArrowRight className="w-5 h-5 rotate-180" />
+        <ChevronLeft className="w-5 h-5" />
       </button>
       <button
-        onClick={() => handleImageChange((currentImage + 1) % galleryImages.length)}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200"
+        onClick={handleNext}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200 z-20"
         aria-label="Next image"
       >
-        <ArrowRight className="w-5 h-5" />
+        <ChevronRight className="w-5 h-5" />
       </button>
     </div>
   );
