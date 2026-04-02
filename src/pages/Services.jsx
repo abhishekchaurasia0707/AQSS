@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Award, Users, FileText, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
 
 const Services = () => {
@@ -161,52 +161,54 @@ const Services = () => {
                     </div>
                   </div>
 
-                  {expandedService === service.id && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700"
-                    >
-                      <p className="text-gray-600 dark:text-gray-400 mb-6">
-                        {service.fullDescription}
-                      </p>
+                  <AnimatePresence>
+                    {expandedService === service.id && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700"
+                      >
+                        <p className="text-gray-600 dark:text-gray-400 mb-6">
+                          {service.fullDescription}
+                        </p>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-                            Key Features
-                          </h4>
-                          <ul className="space-y-2">
-                            {service.features.map((feature, idx) => (
-                              <li key={idx} className="flex items-start space-x-2">
-                                <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-sm text-gray-600 dark:text-gray-400">
-                                  {feature}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+                              Key Features
+                            </h4>
+                            <ul className="space-y-2">
+                              {service.features.map((feature, idx) => (
+                                <li key={idx} className="flex items-start space-x-2">
+                                  <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
+                                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                                    {feature}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
 
-                        <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
-                            Benefits
-                          </h4>
-                          <ul className="space-y-2">
-                            {service.benefits.map((benefit, idx) => (
-                              <li key={idx} className="flex items-start space-x-2">
-                                <Award className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-sm text-gray-600 dark:text-gray-400">
-                                  {benefit}
-                                </span>
-                              </li>
-                            ))}
-                          </ul>
+                          <div>
+                            <h4 className="font-semibold text-gray-900 dark:text-white mb-3">
+                              Benefits
+                            </h4>
+                            <ul className="space-y-2">
+                              {service.benefits.map((benefit, idx) => (
+                                <li key={idx} className="flex items-start space-x-2">
+                                  <Award className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                                    {benefit}
+                                  </span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </motion.div>
-                  )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
             ))}
