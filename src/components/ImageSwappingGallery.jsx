@@ -60,7 +60,11 @@ const ImageSwappingGallery = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage((prev) => (prev + 1) % galleryImages.length);
+      setCurrentImage((prev) => {
+        const nextIndex = prev === galleryImages.length - 1 ? 0 : prev + 1;
+        console.log('Auto-play: from', prev, 'to', nextIndex);
+        return nextIndex;
+      });
     }, 6000); // Increased from 4s to 6s for better performance
 
     return () => clearInterval(interval);
@@ -72,15 +76,15 @@ const ImageSwappingGallery = () => {
   };
 
   const handlePrevious = () => {
-    const newIndex = (currentImage - 1 + galleryImages.length) % galleryImages.length;
-    console.log('Previous clicked, new index:', newIndex);
-    handleImageChange(newIndex);
+    const newIndex = currentImage === 0 ? galleryImages.length - 1 : currentImage - 1;
+    console.log('Previous clicked, current:', currentImage, 'new:', newIndex);
+    setCurrentImage(newIndex);
   };
 
   const handleNext = () => {
-    const newIndex = (currentImage + 1) % galleryImages.length;
-    console.log('Next clicked, new index:', newIndex);
-    handleImageChange(newIndex);
+    const newIndex = currentImage === galleryImages.length - 1 ? 0 : currentImage + 1;
+    console.log('Next clicked, current:', currentImage, 'new:', newIndex);
+    setCurrentImage(newIndex);
   };
 
   const currentImageData = galleryImages[currentImage];
