@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Shield, 
   Award, 
@@ -88,61 +88,72 @@ const ImageSwappingGallery = () => {
   return (
     <div className="relative w-full h-96 md:h-[500px]">
       {/* Main Image Display */}
-      <motion.div
-        key={currentImage}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-        className="absolute inset-0"
-      >
-        <div className={`relative w-full h-full bg-gradient-to-br ${currentImageData.color} rounded-2xl overflow-hidden shadow-2xl`}>
-          {/* Simple Background Overlay */}
-          <div className="absolute inset-0 bg-black/10"></div>
+      <div className="absolute inset-0 overflow-hidden rounded-2xl">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentImage}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -100 }}
+            transition={{ 
+              duration: 0.5, 
+              ease: [0.25, 0.46, 0.45, 0.94]
+            }}
+            className="w-full h-full"
+          >
+            <div className={`relative w-full h-full bg-gradient-to-br ${currentImageData.color} rounded-2xl overflow-hidden shadow-2xl`}>
+              {/* Simple Background Overlay */}
+              <div className="absolute inset-0 bg-black/10"></div>
 
-          {/* Content Overlay */}
-          <div className="relative z-10 h-full flex flex-col justify-between p-8 text-white">
-            {/* Top Section */}
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                  <currentImageData.icon className="w-6 h-6" />
-                </div>
+              {/* Content Overlay */}
+              <div className="relative z-10 h-full flex flex-col justify-between p-8 text-white">
+                {/* Top Section */}
                 <div>
-                  <h3 className="text-2xl font-bold">{currentImageData.title}</h3>
-                  <p className="text-white/80">{currentImageData.description}</p>
+                  <div className="flex items-center space-x-3 mb-4">
+                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
+                      <currentImageData.icon className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold">{currentImageData.title}</h3>
+                      <p className="text-white/80">{currentImageData.description}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Middle Section - Features */}
+                <div className="flex-1 flex items-center justify-center">
+                  <div className="grid grid-cols-2 gap-4 max-w-md">
+                    {currentImageData.features.map((feature, index) => (
+                      <motion.div
+                        key={feature}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2"
+                      >
+                        <CheckCircle className="w-4 h-4 flex-shrink-0" />
+                        <span className="text-sm">{feature}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom Section */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span className="text-sm">Advanced Quality Solutions</span>
+                  </div>
+                  <button className="flex items-center space-x-2 bg-white/20 rounded-lg px-4 py-2 hover:bg-white/30 transition-colors duration-200">
+                    <Play className="w-4 h-4" />
+                    <span className="text-sm">Learn More</span>
+                  </button>
                 </div>
               </div>
             </div>
-
-            {/* Middle Section - Features */}
-            <div className="flex-1 flex items-center justify-center">
-              <div className="grid grid-cols-2 gap-4 max-w-md">
-                {currentImageData.features.map((feature, index) => (
-                  <div
-                    key={feature}
-                    className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2"
-                  >
-                    <CheckCircle className="w-4 h-4 flex-shrink-0" />
-                    <span className="text-sm">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Bottom Section */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
-                <span className="text-sm">Advanced Quality Solutions</span>
-              </div>
-              <button className="flex items-center space-x-2 bg-white/20 rounded-lg px-4 py-2 hover:bg-white/30 transition-colors duration-200">
-                <Play className="w-4 h-4" />
-                <span className="text-sm">Learn More</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </motion.div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
 
       {/* Thumbnail Navigation */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
