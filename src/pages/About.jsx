@@ -77,35 +77,35 @@ const About = () => {
         <div className="container-max">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Our Story</h2>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">Our Story</h2>
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-4">
                 Advance Quality Service and Solution (AQSS) was established in 2018 in Pune with a vision to provide exceptional quality certification and consulting services.
               </p>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 mb-4">
                 With over 6 years of experience, we've successfully helped more than 500 clients achieve their quality goals through ISO certification, quality documentation, training programs, and internal audits.
               </p>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-300">
                 Our expertise spans both automotive and non-automotive industries, making us a versatile partner for all your quality needs.
               </p>
             </motion.div>
             <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-              <div className="bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900 dark:to-secondary-900 rounded-2xl p-8">
-                <div className="grid grid-cols-2 gap-6">
+              <div className="bg-gradient-to-br from-primary-100 to-secondary-100 dark:from-primary-900 dark:to-secondary-900 rounded-2xl p-6 md:p-8">
+                <div className="grid grid-cols-2 gap-4 md:gap-6">
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold text-primary-600 dark:text-primary-400">500+</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Clients</p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-primary-600 dark:text-primary-400">500+</h3>
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Clients</p>
                   </div>
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold text-primary-600 dark:text-primary-400">1000+</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Certifications</p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-primary-600 dark:text-primary-400">1000+</h3>
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Certifications</p>
                   </div>
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold text-primary-600 dark:text-primary-400">6+</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Years</p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-primary-600 dark:text-primary-400">6+</h3>
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Years</p>
                   </div>
                   <div className="text-center">
-                    <h3 className="text-3xl font-bold text-primary-600 dark:text-primary-400">98%</h3>
-                    <p className="text-gray-600 dark:text-gray-400">Success</p>
+                    <h3 className="text-2xl md:text-3xl font-bold text-primary-600 dark:text-primary-400">98%</h3>
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">Success</p>
                   </div>
                 </div>
               </div>
@@ -148,17 +148,17 @@ const About = () => {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Director Image */}
-              <div className="relative h-96 md:h-auto">
+              <div className="relative h-64 md:h-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-secondary-600 opacity-10"></div>
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center">
-                    <div className="w-32 h-32 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Shield className="w-16 h-16 text-white" />
+                    <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-r from-primary-600 to-secondary-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Shield className="w-12 h-12 md:w-16 md:h-16 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-2">
                       Director Name
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400">
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400">
                       Founder & Director
                     </p>
                   </div>
@@ -166,70 +166,70 @@ const About = () => {
               </div>
 
               {/* Director Information */}
-              <div className="p-8 md:p-12">
+              <div className="p-6 md:p-12">
                 <div className="mb-6">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white mb-3">
                     Leadership & Vision
                   </h3>
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 leading-relaxed">
                     With over 16+ years of extensive experience in quality management systems and automotive industry standards, our director brings unparalleled expertise to AQSS. Having worked with numerous multinational corporations and helped achieve 500+ certifications, our leadership ensures the highest standards of quality consulting and implementation.
                   </p>
                 </div>
 
                 <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                  <h4 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-3">
                     Expertise Areas
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">ISO 9001:2015 QMS</span>
+                      <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">ISO 9001:2015 QMS</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">IATF 16949:2016</span>
+                      <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">IATF 16949:2016</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">ISO 14001:2015 EMS</span>
+                      <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">ISO 14001:2015 EMS</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">ISO 45001:2018 OHSMS</span>
+                      <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">ISO 45001:2018 OHSMS</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">PPAP & APQP</span>
+                      <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">PPAP & APQP</span>
                     </div>
                     <div className="flex items-center space-x-2">
                       <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                      <span className="text-sm text-gray-600 dark:text-gray-400">SPC & MSA</span>
+                      <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400">SPC & MSA</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                  <h4 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-3">
                     Achievements
                   </h4>
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">500+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Certifications</div>
+                      <div className="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">500+</div>
+                      <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Certifications</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">16+</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
+                      <div className="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">16+</div>
+                      <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Years Experience</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">100%</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">Success Rate</div>
+                      <div className="text-xl md:text-2xl font-bold text-primary-600 dark:text-primary-400 mb-1">100%</div>
+                      <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Success Rate</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                  <p className="text-gray-600 dark:text-gray-400 italic">
+                  <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 italic">
                     "Quality is not an act, it is a habit. Our commitment to excellence drives every client engagement and ensures sustainable business success."
                   </p>
                 </div>
@@ -249,63 +249,63 @@ const About = () => {
           </div>
 
           {/* Journey Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
-              <div className="text-3xl mb-2">🚀</div>
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">2018</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Founded</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+            <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6 text-center shadow-lg">
+              <div className="text-2xl md:text-3xl mb-2">🚀</div>
+              <div className="text-xl md:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">2018</div>
+              <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Founded</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
-              <div className="text-3xl mb-2">👥</div>
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">500+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Clients</div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6 text-center shadow-lg">
+              <div className="text-2xl md:text-3xl mb-2">👥</div>
+              <div className="text-xl md:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">500+</div>
+              <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Clients</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
-              <div className="text-3xl mb-2">🏆</div>
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">1000+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Certifications</div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6 text-center shadow-lg">
+              <div className="text-2xl md:text-3xl mb-2">🏆</div>
+              <div className="text-xl md:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">1000+</div>
+              <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Certifications</div>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
-              <div className="text-3xl mb-2">🎯</div>
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">100%</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Success Rate</div>
+            <div className="bg-white dark:bg-gray-800 rounded-xl md:rounded-2xl p-4 md:p-6 text-center shadow-lg">
+              <div className="text-2xl md:text-3xl mb-2">🎯</div>
+              <div className="text-xl md:text-3xl font-bold text-primary-600 dark:text-primary-400 mb-1">100%</div>
+              <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">Success Rate</div>
             </div>
           </div>
 
           {/* Timeline */}
           <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-600 via-secondary-600 to-primary-600 rounded-full"></div>
+            {/* Timeline Line - Hidden on mobile */}
+            <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-primary-600 via-secondary-600 to-primary-600 rounded-full"></div>
             
             {milestones.map((milestone, index) => (
-              <div key={milestone.year} className={`flex items-center mb-12 ${index % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+              <div key={milestone.year} className={`flex items-center mb-12 ${index % 2 === 0 ? 'md:justify-start' : 'md:justify-end'} justify-center`}>
                 {/* Content Card */}
-                <div className={`w-5/12 ${index % 2 === 0 ? 'text-right pr-8' : 'text-left pl-8 order-2'}`}>
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group">
+                <div className={`w-full md:w-5/12 ${index % 2 === 0 ? 'md:text-right md:pr-8' : 'md:text-left md:pl-8 md:order-2'}`}>
+                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 md:p-8 shadow-xl hover:shadow-2xl transition-all duration-300 group">
                     <div className="flex items-center justify-between mb-4">
-                      <div className={`text-4xl ${index % 2 === 0 ? 'order-2' : 'order-1'}`}>
+                      <div className={`text-3xl md:text-4xl ${index % 2 === 0 ? 'md:order-2' : 'md:order-1'}`}>
                         {milestone.icon}
                       </div>
-                      <div className={`text-2xl font-bold text-primary-600 dark:text-primary-400 ${index % 2 === 0 ? 'order-1' : 'order-2'}`}>
+                      <div className={`text-lg md:text-2xl font-bold text-primary-600 dark:text-primary-400 ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
                         {milestone.year}
                       </div>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                    <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-3">
                       {milestone.title}
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                    <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
                       {milestone.description}
                     </p>
-                    <div className="inline-flex items-center space-x-2 bg-primary-100 dark:bg-primary-900/30 px-4 py-2 rounded-full">
-                      <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
+                    <div className="inline-flex items-center space-x-2 bg-primary-100 dark:bg-primary-900/30 px-3 md:px-4 py-2 rounded-full">
+                      <span className="text-xs md:text-sm font-semibold text-primary-600 dark:text-primary-400">
                         {milestone.achievement}
                       </span>
                     </div>
                   </div>
                 </div>
                 
-                {/* Timeline Dot */}
-                <div className="w-2/12 flex justify-center">
+                {/* Timeline Dot - Centered on mobile */}
+                <div className="hidden md:block w-2/12 flex justify-center">
                   <div className="relative">
                     <div className="w-16 h-16 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
                       {milestone.year.slice(-2)}
@@ -314,7 +314,12 @@ const About = () => {
                   </div>
                 </div>
                 
-                <div className="w-5/12"></div>
+                {/* Mobile Timeline Dot */}
+                <div className="md:hidden absolute left-1/2 transform -translate-x-1/2 w-12 h-12 bg-gradient-to-br from-primary-600 to-secondary-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg z-10">
+                  {milestone.year.slice(-2)}
+                </div>
+                
+                <div className="hidden md:block w-5/12"></div>
               </div>
             ))}
           </div>
