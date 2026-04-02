@@ -9,11 +9,13 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
-  Play
+  Play,
+  ArrowRight
 } from 'lucide-react';
 
 const ImageSwappingGallery = () => {
   const [currentImage, setCurrentImage] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const galleryImages = useMemo(() => [
     {
@@ -22,7 +24,8 @@ const ImageSwappingGallery = () => {
       description: "Comprehensive ISO certification solutions",
       icon: Shield,
       color: "from-blue-600 to-blue-800",
-      features: ["ISO 9001:2015", "Documentation", "Audit Support", "Certification"]
+      features: ["ISO 9001:2015", "Documentation", "Audit Support", "Certification"],
+      bgGradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
     },
     {
       id: 2,
@@ -30,7 +33,8 @@ const ImageSwappingGallery = () => {
       description: "Advanced process optimization methodologies",
       icon: TrendingUp,
       color: "from-green-600 to-green-800",
-      features: ["Lean Manufacturing", "Six Sigma", "Kaizen", "Continuous Improvement"]
+      features: ["Lean Manufacturing", "Six Sigma", "Kaizen", "Continuous Improvement"],
+      bgGradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
     },
     {
       id: 3,
@@ -38,7 +42,8 @@ const ImageSwappingGallery = () => {
       description: "Professional quality management training",
       icon: Users,
       color: "from-purple-600 to-purple-800",
-      features: ["Internal Auditing", "Quality Tools", "Leadership", "Compliance"]
+      features: ["Internal Auditing", "Quality Tools", "Leadership", "Compliance"],
+      bgGradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
     },
     {
       id: 4,
@@ -46,7 +51,8 @@ const ImageSwappingGallery = () => {
       description: "Complete quality documentation solutions",
       icon: FileText,
       color: "from-orange-600 to-orange-800",
-      features: ["PPAP Packages", "APQP", "SPC", "MSA Studies"]
+      features: ["PPAP Packages", "APQP", "SPC", "MSA Studies"],
+      bgGradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)"
     },
     {
       id: 5,
@@ -54,142 +60,221 @@ const ImageSwappingGallery = () => {
       description: "100% success rate in certifications",
       icon: Award,
       color: "from-red-600 to-red-800",
-      features: ["IATF 16949", "ISO 14001", "ISO 45001", "Industry Standards"]
+      features: ["IATF 16949", "ISO 14001", "ISO 45001", "Industry Standards"],
+      bgGradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)"
     }
   ], []);
 
   useEffect(() => {
+    if (!isAutoPlaying) return;
+    
     const interval = setInterval(() => {
-      setCurrentImage((prev) => {
-        const nextIndex = prev === galleryImages.length - 1 ? 0 : prev + 1;
-        console.log('Auto-play: from', prev, 'to', nextIndex);
-        return nextIndex;
-      });
-    }, 6000); // Increased from 4s to 6s for better performance
+      setCurrentImage((prev) => (prev + 1) % galleryImages.length);
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, [galleryImages.length]);
+  }, [isAutoPlaying, galleryImages.length]);
 
-  const handleImageChange = (index) => {
-    console.log('Changing to image:', index);
+  const goToSlide = (index) => {
     setCurrentImage(index);
+    setIsAutoPlaying(false);
   };
 
-  const handlePrevious = () => {
-    const newIndex = currentImage === 0 ? galleryImages.length - 1 : currentImage - 1;
-    console.log('Previous clicked, current:', currentImage, 'new:', newIndex);
-    setCurrentImage(newIndex);
+  const goToPrevious = () => {
+    setCurrentImage((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
+    setIsAutoPlaying(false);
   };
 
-  const handleNext = () => {
-    const newIndex = currentImage === galleryImages.length - 1 ? 0 : currentImage + 1;
-    console.log('Next clicked, current:', currentImage, 'new:', newIndex);
-    setCurrentImage(newIndex);
+  const goToNext = () => {
+    setCurrentImage((prev) => (prev + 1) % galleryImages.length);
+    setIsAutoPlaying(false);
   };
 
   const currentImageData = galleryImages[currentImage];
 
+  const slideVariants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 1000 : -1000,
+      opacity: 0
+    })
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => {
+    return Math.abs(offset) * velocity;
+  };
+
   return (
-    <div className="relative w-full h-96 md:h-[500px]">
-      {/* Main Image Display */}
-      <div className="absolute inset-0 overflow-hidden rounded-2xl">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentImage}
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -100 }}
-            transition={{ 
-              duration: 0.5, 
-              ease: [0.25, 0.46, 0.45, 0.94]
-            }}
-            className="w-full h-full"
+    <div className="relative w-full h-96 md:h-[500px] bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden shadow-2xl">
+      <AnimatePresence initial={false} custom={currentImage > 0 ? 1 : -1}>
+        <motion.div
+          key={currentImage}
+          custom={currentImage > 0 ? 1 : -1}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{
+            x: { type: "spring", stiffness: 300, damping: 30 },
+            opacity: { duration: 0.2 }
+          }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={1}
+          onDragEnd={(e, { offset, velocity }) => {
+            const swipe = swipePower(offset.x, velocity.x);
+
+            if (swipe < -swipeConfidenceThreshold) {
+              goToNext();
+            } else if (swipe > swipeConfidenceThreshold) {
+              goToPrevious();
+            }
+          }}
+          className="absolute inset-0"
+        >
+          <div 
+            className="w-full h-full relative"
+            style={{ background: currentImageData.bgGradient }}
           >
-            <div className={`relative w-full h-full bg-gradient-to-br ${currentImageData.color} rounded-2xl overflow-hidden shadow-2xl`}>
-              {/* Simple Background Overlay */}
-              <div className="absolute inset-0 bg-black/10"></div>
-
-              {/* Content Overlay */}
-              <div className="relative z-10 h-full flex flex-col justify-between p-8 text-white">
-                {/* Top Section */}
-                <div>
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                      <currentImageData.icon className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold">{currentImageData.title}</h3>
-                      <p className="text-white/80">{currentImageData.description}</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Middle Section - Features */}
-                <div className="flex-1 flex items-center justify-center">
-                  <div className="grid grid-cols-2 gap-4 max-w-md">
-                    {currentImageData.features.map((feature, index) => (
-                      <motion.div
-                        key={feature}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2"
-                      >
-                        <CheckCircle className="w-4 h-4 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Bottom Section */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                    <span className="text-sm">Advanced Quality Solutions</span>
-                  </div>
-                  <button className="flex items-center space-x-2 bg-white/20 rounded-lg px-4 py-2 hover:bg-white/30 transition-colors duration-200">
-                    <Play className="w-4 h-4" />
-                    <span className="text-sm">Learn More</span>
-                  </button>
-                </div>
-              </div>
+            {/* Animated Background Pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute inset-0" style={{
+                backgroundImage: `radial-gradient(circle at 20% 50%, white 0%, transparent 50%), 
+                                radial-gradient(circle at 80% 80%, white 0%, transparent 50%), 
+                                radial-gradient(circle at 40% 20%, white 0%, transparent 50%)`
+              }} />
             </div>
-          </motion.div>
-        </AnimatePresence>
-      </div>
 
-      {/* Thumbnail Navigation */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {/* Content */}
+            <div className="relative z-10 h-full flex flex-col justify-between p-8 md:p-12 text-white">
+              {/* Header */}
+              <motion.div 
+                initial={{ y: -20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center space-x-4"
+              >
+                <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
+                  <currentImageData.icon className="w-8 h-8" />
+                </div>
+                <div>
+                  <h2 className="text-3xl md:text-4xl font-bold mb-2">{currentImageData.title}</h2>
+                  <p className="text-lg text-white/80">{currentImageData.description}</p>
+                </div>
+              </motion.div>
+
+              {/* Features Grid */}
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="flex-1 flex items-center justify-center py-8"
+              >
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 max-w-2xl w-full">
+                  {currentImageData.features.map((feature, index) => (
+                    <motion.div
+                      key={feature}
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.6 + index * 0.1 }}
+                      whileHover={{ scale: 1.05 }}
+                      className="flex items-center space-x-3 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20"
+                    >
+                      <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
+                      <span className="text-sm md:text-base font-medium">{feature}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Footer */}
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.8 }}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+                  <span className="text-sm md:text-base">Advanced Quality Solutions</span>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="flex items-center space-x-2 bg-white text-gray-900 rounded-xl px-6 py-3 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg"
+                >
+                  <Play className="w-5 h-5" />
+                  <span>Learn More</span>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.button>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Navigation Arrows */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={goToPrevious}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white shadow-xl z-30 border border-white/20"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="w-7 h-7" />
+      </motion.button>
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={goToNext}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 w-14 h-14 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white shadow-xl z-30 border border-white/20"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-7 h-7" />
+      </motion.button>
+
+      {/* Progress Indicators */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3 z-30">
         {galleryImages.map((_, index) => (
-          <button
+          <motion.button
             key={index}
-            onClick={() => handleImageChange(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              index === currentImage
-                ? 'bg-white w-8'
-                : 'bg-white/50 hover:bg-white/70'
+            onClick={() => goToSlide(index)}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              index === currentImage 
+                ? 'w-8 bg-white' 
+                : 'w-2 bg-white/40 hover:bg-white/60'
             }`}
-            aria-label={`Go to image ${index + 1}`}
+            whileHover={{ scale: 1.2 }}
+            whileTap={{ scale: 0.8 }}
+            aria-label={`Go to slide ${index + 1}`}
           />
         ))}
       </div>
 
-      {/* Side Navigation Arrows */}
-      <button
-        onClick={handlePrevious}
-        className="absolute left-0 md:left-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white hover:shadow-xl transition-all duration-300 z-30 border border-white/20"
-        aria-label="Previous image"
+      {/* Auto-play Toggle */}
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+        className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-white hover:bg-white/30 z-30"
+        aria-label={isAutoPlaying ? "Pause auto-play" : "Start auto-play"}
       >
-        <ChevronLeft className="w-6 h-6" />
-      </button>
-      <button
-        onClick={handleNext}
-        className="absolute right-0 md:right-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white hover:shadow-xl transition-all duration-300 z-30 border border-white/20"
-        aria-label="Next image"
-      >
-        <ChevronRight className="w-6 h-6" />
-      </button>
+        {isAutoPlaying ? (
+          <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <div className="w-3 h-3 border-2 border-white rounded-sm" />
+        )}
+      </motion.button>
     </div>
   );
 };
