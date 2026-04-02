@@ -163,17 +163,17 @@ const ImageSwappingGallery = () => {
       {/* Side Navigation Arrows */}
       <button
         onClick={handlePrevious}
-        className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200 z-20 shadow-lg"
+        className="absolute left-0 md:left-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white hover:shadow-xl transition-all duration-300 z-30 border border-white/20"
         aria-label="Previous image"
       >
-        <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+        <ChevronLeft className="w-6 h-6" />
       </button>
       <button
         onClick={handleNext}
-        className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 w-8 h-8 md:w-10 md:h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors duration-200 z-20 shadow-lg"
+        className="absolute right-0 md:right-2 top-1/2 transform -translate-y-1/2 w-12 h-12 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center text-gray-800 hover:bg-white hover:shadow-xl transition-all duration-300 z-30 border border-white/20"
         aria-label="Next image"
       >
-        <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+        <ChevronRight className="w-6 h-6" />
       </button>
     </div>
   );
