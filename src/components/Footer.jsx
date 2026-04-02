@@ -46,8 +46,8 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container-max section-padding">
+    <footer className="bg-gray-900 text-white pt-16 md:pt-20">
+      <div className="container-max pb-16 px-4 md:px-8 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <motion.div
