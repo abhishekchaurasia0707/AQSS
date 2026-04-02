@@ -162,14 +162,14 @@ const ImageSwappingGallery = () => {
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="flex items-center space-x-4"
+                className="flex items-center space-x-2 md:space-x-4"
               >
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/30">
-                  <currentImageData.icon className="w-8 h-8" />
+                <div className="w-12 h-12 md:w-16 md:h-16 bg-white/20 backdrop-blur-md rounded-xl md:rounded-2xl flex items-center justify-center border border-white/30 flex-shrink-0">
+                  <currentImageData.icon className="w-6 h-6 md:w-8 md:h-8" />
                 </div>
-                <div>
-                  <h2 className="text-3xl md:text-4xl font-bold mb-2">{currentImageData.title}</h2>
-                  <p className="text-lg text-white/80">{currentImageData.description}</p>
+                <div className="min-w-0 flex-1">
+                  <h2 className="text-xl md:text-3xl md:text-4xl font-bold mb-1 md:mb-2 truncate">{currentImageData.title}</h2>
+                  <p className="text-sm md:text-lg text-white/80 line-clamp-2">{currentImageData.description}</p>
                 </div>
               </motion.div>
 
@@ -178,9 +178,9 @@ const ImageSwappingGallery = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="flex-1 flex items-center justify-center py-8"
+                className="flex-1 flex items-center justify-center py-4 md:py-8 px-2"
               >
-                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 max-w-2xl w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-4 max-w-2xl w-full">
                   {currentImageData.features.map((feature, index) => (
                     <motion.div
                       key={feature}
@@ -188,10 +188,10 @@ const ImageSwappingGallery = () => {
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ delay: 0.6 + index * 0.1 }}
                       whileHover={{ scale: 1.05 }}
-                      className="flex items-center space-x-3 bg-white/10 backdrop-blur-md rounded-xl px-4 py-3 border border-white/20"
+                      className="flex items-center space-x-2 md:space-x-3 bg-white/10 backdrop-blur-md rounded-lg md:rounded-xl px-2 py-2 md:px-4 md:py-3 border border-white/20 min-w-0"
                     >
-                      <CheckCircle className="w-5 h-5 text-green-300 flex-shrink-0" />
-                      <span className="text-sm md:text-base font-medium">{feature}</span>
+                      <CheckCircle className="w-4 h-4 md:w-5 md:h-5 text-green-300 flex-shrink-0" />
+                      <span className="text-xs md:text-sm md:text-base font-medium truncate">{feature}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -202,20 +202,21 @@ const ImageSwappingGallery = () => {
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                className="flex items-center justify-between"
+                className="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0"
               >
-                <div className="flex items-center space-x-3">
-                  <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-                  <span className="text-sm md:text-base">Advanced Quality Solutions</span>
+                <div className="flex items-center space-x-2 md:space-x-3">
+                  <div className="w-2 h-2 md:w-3 md:h-3 bg-white rounded-full animate-pulse"></div>
+                  <span className="text-xs md:text-sm md:text-base truncate">Advanced Quality Solutions</span>
                 </div>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="flex items-center space-x-2 bg-white text-gray-900 rounded-xl px-6 py-3 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg"
+                  className="flex items-center space-x-1 md:space-x-2 bg-white text-gray-900 rounded-lg md:rounded-xl px-3 py-2 md:px-6 md:py-3 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg text-sm md:text-base"
                 >
-                  <Play className="w-5 h-5" />
-                  <span>Learn More</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <Play className="w-4 h-4 md:w-5 md:h-5" />
+                  <span className="hidden sm:inline">Learn More</span>
+                  <span className="sm:hidden">Learn</span>
+                  <ArrowRight className="w-3 h-3 md:w-4 md:h-4 hidden sm:inline" />
                 </motion.button>
               </motion.div>
             </div>
