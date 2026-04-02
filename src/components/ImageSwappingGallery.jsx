@@ -94,46 +94,41 @@ const ImageSwappingGallery = () => {
 
   const slideVariants = {
     enter: (direction) => ({
-      x: direction > 0 ? 1000 : -1000,
+      x: direction > 0 ? 50 : -50,
       opacity: 0,
-      scale: 0.8,
-      rotateY: direction > 0 ? 45 : -45
+      scale: 0.95
     }),
     center: {
       zIndex: 1,
       x: 0,
       opacity: 1,
       scale: 1,
-      rotateY: 0,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.4 },
-        scale: { duration: 0.4 },
-        rotateY: { duration: 0.6 }
+        x: { type: "spring", stiffness: 100, damping: 20 },
+        opacity: { duration: 0.6, ease: "easeOut" },
+        scale: { duration: 0.6, ease: "easeOut" }
       }
     },
     exit: (direction) => ({
       zIndex: 0,
-      x: direction < 0 ? 1000 : -1000,
+      x: direction < 0 ? 50 : -50,
       opacity: 0,
-      scale: 0.8,
-      rotateY: direction < 0 ? 45 : -45,
+      scale: 0.95,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
-        opacity: { duration: 0.3 },
-        scale: { duration: 0.3 },
-        rotateY: { duration: 0.5 }
+        x: { type: "spring", stiffness: 100, damping: 20 },
+        opacity: { duration: 0.4, ease: "easeIn" },
+        scale: { duration: 0.4, ease: "easeIn" }
       }
     })
   };
 
-  const swipeConfidenceThreshold = 10000;
+  const swipeConfidenceThreshold = 5000;
   const swipePower = (offset, velocity) => {
     return Math.abs(offset) * velocity;
   };
 
   return (
-    <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+    <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100">
       <AnimatePresence initial={false} custom={currentImage > 0 ? 1 : -1}>
         <motion.div
           key={currentImage}
@@ -142,10 +137,9 @@ const ImageSwappingGallery = () => {
           initial="enter"
           animate="center"
           exit="exit"
-          style={{ perspective: 1200 }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={1}
+          dragElastic={0.2}
           onDragEnd={(e, { offset, velocity }) => {
             const swipe = swipePower(offset.x, velocity.x);
 
