@@ -95,17 +95,35 @@ const ImageSwappingGallery = () => {
   const slideVariants = {
     enter: (direction) => ({
       x: direction > 0 ? 1000 : -1000,
-      opacity: 0
+      opacity: 0,
+      scale: 0.8,
+      rotateY: direction > 0 ? 45 : -45
     }),
     center: {
       zIndex: 1,
       x: 0,
-      opacity: 1
+      opacity: 1,
+      scale: 1,
+      rotateY: 0,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.4 },
+        scale: { duration: 0.4 },
+        rotateY: { duration: 0.6 }
+      }
     },
     exit: (direction) => ({
       zIndex: 0,
       x: direction < 0 ? 1000 : -1000,
-      opacity: 0
+      opacity: 0,
+      scale: 0.8,
+      rotateY: direction < 0 ? 45 : -45,
+      transition: {
+        x: { type: "spring", stiffness: 300, damping: 30 },
+        opacity: { duration: 0.3 },
+        scale: { duration: 0.3 },
+        rotateY: { duration: 0.5 }
+      }
     })
   };
 
@@ -115,7 +133,7 @@ const ImageSwappingGallery = () => {
   };
 
   return (
-    <div className="relative w-full h-96 md:h-[500px] bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden shadow-2xl">
+    <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
       <AnimatePresence initial={false} custom={currentImage > 0 ? 1 : -1}>
         <motion.div
           key={currentImage}
@@ -124,10 +142,7 @@ const ImageSwappingGallery = () => {
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{
-            x: { type: "spring", stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 }
-          }}
+          style={{ perspective: 1200 }}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={1}
@@ -143,7 +158,7 @@ const ImageSwappingGallery = () => {
           className="absolute inset-0"
         >
           <div 
-            className="w-full h-full relative"
+            className="w-full h-full relative rounded-3xl overflow-hidden"
             style={{ background: currentImageData.bgGradient }}
           >
             {/* Animated Background Pattern */}
