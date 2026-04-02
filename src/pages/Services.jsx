@@ -105,7 +105,8 @@ const Services = () => {
   ];
 
   const toggleService = (serviceId) => {
-    setExpandedService(expandedService === serviceId ? null : serviceId);
+    console.log('Toggle service called:', serviceId, 'Current expanded:', expandedService);
+    setExpandedService(prevId => prevId === serviceId ? null : serviceId);
   };
 
   return (
@@ -146,7 +147,11 @@ const Services = () => {
                       </p>
                       
                       <button
-                        onClick={() => toggleService(service.id)}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleService(service.id);
+                        }}
                         className="flex items-center space-x-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
                       >
                         <span className="font-medium">
@@ -161,12 +166,14 @@ const Services = () => {
                     </div>
                   </div>
 
-                  <AnimatePresence>
+                  <AnimatePresence key={`service-${service.id}`}>
                     {expandedService === service.id && (
                       <motion.div
+                        key={`expanded-${service.id}`}
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.3 }}
                         className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700"
                       >
                         <p className="text-gray-600 dark:text-gray-400 mb-6">
