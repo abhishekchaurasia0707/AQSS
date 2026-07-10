@@ -1,6 +1,5 @@
 import express from 'express';
 import Joi from 'joi';
-import Contact from '../models/Contact.js';
 import { sendEmail } from '../utils/emailService.js';
 
 const router = express.Router();
@@ -49,168 +48,33 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Create new contact
-    const contact = new Contact(value);
-    await contact.save();
-
     // Send email notification
     try {
       await sendEmail({
-        to: process.env.EMAIL_TO || 'aqssolution11@gmail.com',
-        subject: `New Contact Form Submission - ${contact.name}`,
-        html: generateEmailTemplate(contact),
+        to: process.env.EMAIL_TO || 'rohitkumarhjp9097@gmail.com',
+        subject: `New Contact Form Submission - ${value.name}`,
+        html: generateEmailTemplate(value),
       });
     } catch (emailError) {
       console.error('Failed to send email:', emailError);
-      // Continue even if email fails
+      return res.status(500).json({
+        success: false,
+        message: 'Failed to send email notification',
+      });
     }
 
     res.status(201).json({
       success: true,
       message: 'Contact form submitted successfully',
       data: {
-        id: contact._id,
-        name: contact.name,
-        email: contact.email,
-        phone: contact.phone,
-        service: contact.service,
+        name: value.name,
+        email: value.email,
+        phone: value.phone,
+        service: value.service,
       },
     });
   } catch (error) {
     console.error('Contact form submission error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
-
-// GET /api/contact - Get all contacts (admin route)
-router.get('/', async (req, res) => {
-  try {
-    const {
-      page = 1,
-      limit = 10,
-      status,
-      search,
-      sortBy = 'createdAt',
-      sortOrder = 'desc',
-    } = req.query;
-
-    // Build filter
-    const filter = {};
-    if (status) filter.status = status;
-    if (search) {
-      filter.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { email: { $regex: search, $options: 'i' } },
-        { company: { $regex: search, $options: 'i' } },
-      ];
-    }
-
-    // Build sort
-    const sort = {};
-    sort[sortBy] = sortOrder === 'desc' ? -1 : 1;
-
-    const contacts = await Contact.find(filter)
-      .sort(sort)
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .select('-__v');
-
-    const total = await Contact.countDocuments(filter);
-
-    res.json({
-      success: true,
-      data: contacts,
-      pagination: {
-        current: parseInt(page),
-        pages: Math.ceil(total / limit),
-        total,
-        limit: parseInt(limit),
-      },
-    });
-  } catch (error) {
-    console.error('Get contacts error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
-
-// GET /api/contact/stats - Get contact statistics
-router.get('/stats', async (req, res) => {
-  try {
-    const stats = await Contact.getStats();
-    res.json({
-      success: true,
-      data: stats,
-    });
-  } catch (error) {
-    console.error('Get stats error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
-
-// PUT /api/contact/:id - Update contact status
-router.put('/:id', async (req, res) => {
-  try {
-    const { status, priority, notes } = req.body;
-    
-    const updateData = {};
-    if (status) updateData.status = status;
-    if (priority) updateData.priority = priority;
-    if (notes !== undefined) updateData.notes = notes;
-
-    const contact = await Contact.findByIdAndUpdate(
-      req.params.id,
-      updateData,
-      { new: true, runValidators: true }
-    );
-
-    if (!contact) {
-      return res.status(404).json({
-        success: false,
-        message: 'Contact not found',
-      });
-    }
-
-    res.json({
-      success: true,
-      message: 'Contact updated successfully',
-      data: contact,
-    });
-  } catch (error) {
-    console.error('Update contact error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
-
-// DELETE /api/contact/:id - Delete contact
-router.delete('/:id', async (req, res) => {
-  try {
-    const contact = await Contact.findByIdAndDelete(req.params.id);
-
-    if (!contact) {
-      return res.status(404).json({
-        success: false,
-        message: 'Contact not found',
-      });
-    }
-
-    res.json({
-      success: true,
-      message: 'Contact deleted successfully',
-    });
-  } catch (error) {
-    console.error('Delete contact error:', error);
     res.status(500).json({
       success: false,
       message: 'Internal server error',
@@ -272,7 +136,7 @@ function generateEmailTemplate(contact) {
           </div>
           <div class="field">
             <div class="label">Submitted:</div>
-            <div class="value">${contact.formattedDate}</div>
+            <div class="value">${new Date().toLocaleString()}</div>
           </div>
         </div>
         <div class="footer">

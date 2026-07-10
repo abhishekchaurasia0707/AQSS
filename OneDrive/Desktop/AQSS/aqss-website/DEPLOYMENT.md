@@ -20,23 +20,21 @@
      - Build command: `npm run build`
      - Publish directory: `frontend/dist`
 
-### Backend (Render.com - Free Alternative to Heroku)
+### Backend (Railway)
 
 1. **Prepare Backend**
    - Update `backend/.env.production` with your actual credentials
-   - Set up MongoDB Atlas database
    - Generate new Gmail App Password
 
-2. **Deploy to Render**
-   - Go to [render.com](https://render.com)
-   - Click "New" → "Web Service"
+2. **Deploy to Railway**
+   - Go to [railway.app](https://railway.app)
+   - Click "New Project" → "Deploy from GitHub repo"
    - Connect to your GitHub repository
    - Settings:
      - Name: `aqss-backend`
-     - Root Directory: `backend`
-     - Runtime: `Node`
-     - Build Command: `npm install`
-     - Start Command: `node server.js`
+     - Root Directory: `aqss-website/backend`
+     - Build Command: `bash start.sh`
+     - Start Command: `bash start.sh`
      - Environment Variables: Copy from `.env.production`
 
 ## 📋 Pre-Deployment Checklist
@@ -47,10 +45,7 @@
 - [ ] Check all API calls use environment variables
 
 ### ✅ Backend
-- [ ] Set up MongoDB Atlas database
-- [ ] Update `MONGODB_URI` in `.env.production`
 - [ ] Configure email service with production credentials
-- [ ] Generate secure JWT_SECRET
 - [ ] Test all API endpoints
 
 ### ✅ Both
@@ -61,33 +56,30 @@
 ## 🔗 Post-Deployment
 
 1. **Update URLs**
-   - Replace `your-backend-url.onrender.com` with actual Render URL
+   - Replace `your-backend-url.railway.app` with actual Railway URL
    - Replace `your-frontend-url.netlify.app` with actual Netlify URL
    - Update CORS settings in backend
 
 2. **Test Everything**
    - Contact form submission
    - Email delivery
-   - Database connectivity
    - All page routes
 
 ## 🛠️ Troubleshooting
 
 ### Common Issues:
 1. **CORS Errors**: Update `FRONTEND_URL` in backend environment
-2. **Database Connection**: Check MongoDB Atlas whitelist
-3. **Email Failures**: Verify Gmail App Password and 2FA
-4. **Build Errors**: Check Node.js version compatibility
+2. **Email Failures**: Verify Gmail App Password and 2FA
+3. **Build Errors**: Check Node.js version compatibility
 
 ### Environment Variables:
 - Frontend: `VITE_API_URL`
-- Backend: `NODE_ENV`, `PORT`, `MONGODB_URI`, `EMAIL_*`
+- Backend: `NODE_ENV`, `PORT`, `EMAIL_*`
 
 ## 📊 Monitoring
 
 - **Netlify**: Built-in analytics and form handling
-- **Render**: Built-in monitoring and logs
-- **MongoDB Atlas**: Database performance metrics
+- **Railway**: Built-in monitoring and logs
 - **Gmail**: Email delivery status
 
 ## 🔄 CI/CD

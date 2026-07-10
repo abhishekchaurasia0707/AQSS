@@ -1,13 +1,13 @@
 # AQSS Website - Advance Quality Service and Solution
 
-A modern, production-ready full-stack website for AQSS (Advance Quality Service and Solution) built with React, Node.js, and MongoDB.
+A modern, production-ready full-stack website for AQSS (Advance Quality Service and Solution) built with React, Node.js, and email notifications.
 
 ## 🚀 Features
 
 - **Frontend**: React.js with Vite, Tailwind CSS, Framer Motion
-- **Backend**: Node.js, Express.js, MongoDB
+- **Backend**: Node.js, Express.js, Email notifications
 - **Responsive Design**: Mobile-first approach with dark/light mode
-- **Contact Form**: MongoDB integration with email notifications
+- **Contact Form**: Email notifications with validation
 - **WhatsApp Integration**: Click-to-chat functionality
 - **Modern UI/UX**: Glassmorphism, animations, smooth transitions
 - **SEO Optimized**: Meta tags, clean URLs, fast loading
@@ -25,7 +25,6 @@ aqss-website/
 │   ├── package.json
 │   └── vite.config.js
 ├── backend/                  # Node.js backend
-│   ├── models/              # MongoDB models
 │   ├── routes/              # API routes
 │   ├── middleware/          # Express middleware
 │   ├── utils/               # Backend utilities
@@ -48,8 +47,6 @@ aqss-website/
 ### Backend
 - **Node.js** - Runtime
 - **Express.js** - Web framework
-- **MongoDB** - Database
-- **Mongoose** - ODM
 - **Nodemailer** - Email service
 - **Joi** - Validation
 - **Helmet** - Security
@@ -58,7 +55,6 @@ aqss-website/
 ## 📋 Prerequisites
 
 - Node.js (v18 or higher)
-- MongoDB (local or cloud)
 - Git
 
 ## 🚀 Quick Start
@@ -92,16 +88,13 @@ NODE_ENV=development
 PORT=5000
 FRONTEND_URL=http://localhost:3000
 
-# MongoDB Configuration
-MONGODB_URI=mongodb://localhost:27017/aqss
-
 # Email Configuration (Gmail)
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
 EMAIL_SECURE=false
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
-EMAIL_TO=aqssolution11@gmail.com
+EMAIL_TO=your-email@gmail.com
 
 # WhatsApp Configuration
 WHATSAPP_PHONE=918796905471
@@ -149,30 +142,7 @@ npm run dev
    - Generate a new app password
 3. Use the app password in the `EMAIL_PASS` environment variable
 
-## 🗄️ MongoDB Setup
-
-### Local MongoDB
-
-```bash
-# Install MongoDB
-# Windows: Download from mongodb.com
-# Mac: brew install mongodb-community
-# Linux: sudo apt-get install mongodb
-
-# Start MongoDB
-mongod
-
-# Create database (automatically created on first connection)
-```
-
-### MongoDB Atlas (Cloud)
-
-1. Create account at [MongoDB Atlas](https://www.mongodb.com/atlas)
-2. Create a free cluster
-3. Get connection string
-4. Update `MONGODB_URI` in .env file
-
-## 🚀 Deployment
+##  Deployment
 
 ### Frontend (Netlify/Vercel)
 
@@ -195,21 +165,25 @@ mongod
 2. Connect Render to GitHub repository
 3. Set build command: `npm install`
 4. Set start command: `npm start`
-5. Add environment variables
+5. Add environment variables from `backend/.env.example`
 
 #### Railway
-1. Install Railway CLI: `npm install -g @railway/cli`
-2. Login: `railway login`
-3. Deploy: `railway up`
+1. Push code to GitHub
+2. Connect Railway to the repository
+3. Set build command: `bash start.sh`
+4. If Railway asks for a start command, use: `bash start.sh`
+5. Add environment variables from `backend/.env.example`
+
+For local CLI deployment, you can still run:
+```bash
+cd backend
+railway up
+```
 
 ## 📱 API Endpoints
 
 ### Contact Form
 - `POST /api/contact` - Submit contact form
-- `GET /api/contact` - Get all contacts (admin)
-- `GET /api/contact/stats` - Get contact statistics
-- `PUT /api/contact/:id` - Update contact status
-- `DELETE /api/contact/:id` - Delete contact
 
 ### Health Check
 - `GET /api/health` - Server health status
@@ -249,29 +223,23 @@ Update content in respective page components:
 
 ### Adding New API Endpoints
 1. Create route file in `backend/routes/`
-2. Add model in `backend/models/` if needed
-3. Register route in `backend/server.js`
+2. Register route in `backend/server.js`
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **MongoDB Connection Error**
-   - Check MongoDB is running
-   - Verify connection string in .env
-   - Check network/firewall settings
-
-2. **Email Not Sending**
+1. **Email Not Sending**
    - Verify Gmail app password
    - Check email settings in .env
-   - Ensure less secure apps allowed if using 2FA
+   - Ensure 2FA is enabled on Gmail account
 
-3. **Build Errors**
+2. **Build Errors**
    - Clear node_modules and reinstall
    - Check Node.js version compatibility
    - Verify all dependencies installed
 
-4. **CORS Issues**
+3. **CORS Issues**
    - Check FRONTEND_URL in backend .env
    - Verify CORS configuration
 

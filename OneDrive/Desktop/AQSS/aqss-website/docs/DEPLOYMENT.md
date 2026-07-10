@@ -59,7 +59,7 @@ This guide covers deploying the AQSS website to production environments.
 
 ## 🗄️ Backend Deployment
 
-### Option 1: Render (Recommended)
+### Option 1: Railway (Recommended)
 
 1. **Prepare for Production**
    ```bash
@@ -67,41 +67,18 @@ This guide covers deploying the AQSS website to production environments.
    npm install --production
    ```
 
-2. **Deploy to Render**
+2. **Deploy to Railway**
    - Push code to GitHub
-   - Go to [Render](https://render.com)
-   - Click "New Web Service"
+   - Go to [Railway](https://railway.app)
+   - Click "New Project" → "Deploy from GitHub repo"
    - Connect your GitHub repository
    - Build settings:
-     - Build Command: `npm install`
-     - Start Command: `npm start`
+     - Root Directory: `aqss-website/backend`
+     - Build Command: `bash start.sh`
+     - Start Command: `bash start.sh`
    - Add environment variables from `.env.example`
 
-3. **Database Setup**
-   - Use MongoDB Atlas for production
-   - Update `MONGODB_URI` in environment variables
-
-### Option 2: Railway
-
-1. **Install Railway CLI**
-   ```bash
-   npm i -g @railway/cli
-   ```
-
-2. **Deploy**
-   ```bash
-   cd backend
-   railway up
-   ```
-
-3. **Environment Variables**
-   ```bash
-   railway variables set NODE_ENV=production
-   railway variables set MONGODB_URI=your-mongodb-uri
-   # Add other variables from .env.example
-   ```
-
-### Option 3: VPS/Dedicated Server
+### Option 2: VPS/Dedicated Server
 
 1. **Server Setup**
    ```bash
@@ -144,7 +121,6 @@ This guide covers deploying the AQSS website to production environments.
        env_production: {
          NODE_ENV: 'production',
          PORT: 5000,
-         MONGODB_URI: 'your-production-mongodb-uri',
          EMAIL_USER: 'your-email@gmail.com',
          EMAIL_PASS: 'your-app-password'
        }
@@ -198,66 +174,7 @@ EMAIL_USER=your-aws-access-key
 EMAIL_PASS=your-aws-secret-key
 ```
 
-## 🗄️ Database Setup
-
-### MongoDB Atlas (Recommended)
-
-1. **Create Cluster**
-   - Go to [MongoDB Atlas](https://www.mongodb.com/atlas)
-   - Create a free cluster
-   - Choose cloud provider and region
-
-2. **Configure Network Access**
-   - Add your server IP to IP whitelist
-   - For web deployment, allow access from anywhere (0.0.0.0/0)
-
-3. **Get Connection String**
-   - Go to Database → Connect
-   - Select "Connect your application"
-   - Copy the connection string
-
-4. **Update Environment Variables**
-   ```env
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/aqss
-   ```
-
-### Self-Hosted MongoDB
-
-1. **Install MongoDB**
-   ```bash
-   # Ubuntu/Debian
-   sudo apt-get install -y mongodb
-   
-   # CentOS/RHEL
-   sudo yum install -y mongodb
-   ```
-
-2. **Configure for Production**
-   ```bash
-   # Edit configuration
-   sudo nano /etc/mongod.conf
-   
-   # Enable authentication
-   security:
-     authorization: enabled
-   
-   # Bind to all interfaces
-   net:
-     bindIp: 0.0.0.0
-   ```
-
-3. **Create Database User**
-   ```bash
-   mongo
-   use admin
-   db.createUser({
-     user: "aqss_user",
-     pwd: "secure_password",
-     roles: ["readWrite", "dbAdmin"]
-   })
-   ```
-
-## 🔒 SSL/HTTPS Configuration
+##  SSL/HTTPS Configuration
 
 ### Netlify/Vercel
 - SSL is automatically handled
@@ -425,21 +342,16 @@ sudo tail -f /var/log/nginx/error.log
    - Check Node.js version compatibility
    - Verify all environment variables
 
-2. **Database Connection Issues**
-   - Check MongoDB URI format
-   - Verify IP whitelist in MongoDB Atlas
-   - Check firewall settings
-
-3. **Email Not Sending**
+2. **Email Not Sending**
    - Verify email credentials
    - Check SMTP settings
-   - Ensure less secure apps allowed (Gmail)
+   - Ensure 2FA is enabled on Gmail account
 
-4. **CORS Issues**
+3. **CORS Issues**
    - Update FRONTEND_URL in backend
    - Verify CORS configuration
 
-5. **SSL Certificate Issues**
+4. **SSL Certificate Issues**
    - Check domain DNS settings
    - Renew expired certificates
    - Verify Nginx configuration
