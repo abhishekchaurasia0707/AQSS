@@ -6,47 +6,49 @@ const Clients = () => {
     { 
       name: 'Phi Audiocom Systems Pvt. Ltd.', 
       logo: 'PA',
-      logoUrl: '/assets/logos/OIP.webp',
+      logoUrl: '/assets/logos/Phi Audiocom.webp',
       color: 'from-blue-600 to-blue-800',
       description: 'Audio systems manufacturer'
     },
     { 
       name: 'PreciPower', 
       logo: 'PP',
-      logoUrl: '/assets/logos/OIP (1).webp',
+      logoUrl: '/assets/logos/PreciPower.jpeg',
       color: 'from-purple-600 to-purple-800',
       description: 'Precision engineering solutions'
     },
     { 
       name: 'Ideal Cast', 
       logo: 'IC',
-      logoUrl: '/assets/logos/OIP (2).webp',
+      logoUrl: '/assets/logos/Ideal Cast.jpeg',
       color: 'from-orange-600 to-orange-800',
       description: 'Casting and foundry specialist'
     },
     { 
       name: 'Waghole Engineering', 
       logo: 'WE',
-      logoUrl: '/assets/logos/OIP (3).webp',
+      logoUrl: '/assets/logos/Waghole.jpeg',
       color: 'from-green-600 to-green-800',
       description: 'Engineering solutions provider'
     },
     { 
       name: 'Automech', 
       logo: 'AM',
-      logoUrl: '/assets/logos/OIP (4).webp',
+      logoUrl: '/assets/logos/AutoMech.jpeg',
       color: 'from-red-600 to-red-800',
       description: 'Automotive components'
     },
     { 
       name: 'United Filter Industries Pvt. Ltd.', 
       logo: 'UF',
+      logoUrl: '/assets/logos/United Filter Industries Pvt Ltd.jpeg',
       color: 'from-teal-600 to-teal-800',
       description: 'Filter manufacturing expert'
     },
     { 
       name: 'Skyline Projects', 
       logo: 'SP',
+      logoUrl: '/assets/logos/SkyLine.jpeg',
       color: 'from-indigo-600 to-indigo-800',
       description: 'Project management solutions'
     }
@@ -56,30 +58,35 @@ const Clients = () => {
     { 
       name: 'CTR Manufacturing Industries Pvt. Ltd.', 
       logo: 'CTR',
+      logoUrl: '/assets/logos/ctr manufacturing industries pvt ltd.avif',
       color: 'from-blue-600 to-blue-800',
       description: 'Manufacturing excellence partner'
     },
     { 
       name: 'Tata', 
       logo: 'T',
+      logoUrl: '/assets/logos/Tata.jpg',
       color: 'from-red-600 to-red-800',
       description: 'Global industrial conglomerate'
     },
     { 
       name: 'Mahindra', 
       logo: 'M',
+      logoUrl: '/assets/logos/Mahindra.webp',
       color: 'from-orange-600 to-orange-800',
       description: 'Diversified industrial group'
     },
     { 
       name: 'Siemens', 
       logo: 'S',
+      logoUrl: '/assets/logos/Siemens.webp',
       color: 'from-green-600 to-green-800',
       description: 'Technology innovation leader'
     },
     { 
       name: 'Indian Navy', 
       logo: 'IN',
+      logoUrl: '/assets/logos/Indian Navy.jpg',
       color: 'from-navy-600 to-navy-800',
       description: 'Defense sector excellence'
     }
