@@ -21,10 +21,22 @@ const limiter = rateLimit({
 });
 
 // Middleware
+const rawFrontendOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(',').map(url => url.trim()).filter(Boolean)
+  : [];
+const defaultOrigins = ['http://localhost:3000', 'http://localhost:5173'];
+const allowedOrigins = [...new Set([...rawFrontendOrigins, ...defaultOrigins])];
+const vercelOriginPattern = /^https:\/\/.*\.vercel\.app$/;
+console.log('Allowed CORS origins:', allowedOrigins);
 app.use(helmet());
 app.use(limiter);
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Allow requests with no origin, like server-to-server calls or some native clients.
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin) || vercelOriginPattern.test(origin)) return callback(null, true);
+    return callback(new Error(`CORS policy: origin ${origin} is not allowed`), false);
+  },
   credentials: true,
 }));
 app.use(morgan('combined'));

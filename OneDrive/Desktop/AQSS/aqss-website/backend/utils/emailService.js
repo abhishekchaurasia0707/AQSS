@@ -1,7 +1,19 @@
 import nodemailer from 'nodemailer';
 
+const validateEmailConfig = () => {
+  if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
+    return;
+  }
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    throw new Error('Email configuration incomplete: EMAIL_USER and EMAIL_PASS are required.');
+  }
+};
+
 // Create transporter
 const createTransporter = async () => {
+  validateEmailConfig();
+
   // Use Ethereal for testing
   if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
     const testAccount = await nodemailer.createTestAccount();

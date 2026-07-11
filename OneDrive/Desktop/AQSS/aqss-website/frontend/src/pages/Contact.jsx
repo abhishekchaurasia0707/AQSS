@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Mail, 
@@ -24,6 +24,21 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const normalizeApiUrl = (url) => {
+    if (!url) return null;
+    const trimmed = url.trim().replace(/\/+$/, '');
+    const base = trimmed.replace(/\/api$/i, '');
+    return `${base}/api/contact`;
+  };
+  const apiEndpoint = normalizeApiUrl(import.meta.env.VITE_API_URL) || '/api/contact';
+
+  useEffect(() => {
+    console.log('[Contact] Configured VITE_API_URL:', import.meta.env.VITE_API_URL);
+    console.log('[Contact] Resolved apiEndpoint:', apiEndpoint);
+    if (import.meta.env.PROD && !import.meta.env.VITE_API_URL) {
+      console.warn('[Contact] VITE_API_URL is not configured in production. The contact form may fail.');
+    }
+  }, [apiEndpoint]);
 
   const services = [
     'ISO Certification',
@@ -110,7 +125,7 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('http://localhost:5000/api/contact', {
+      const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
