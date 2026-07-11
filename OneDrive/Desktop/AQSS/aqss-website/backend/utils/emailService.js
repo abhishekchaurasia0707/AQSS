@@ -1,12 +1,14 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
 const validateEmailConfig = () => {
-  if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
+  if (process.env.EMAIL_HOST === "smtp.ethereal.email") {
     return;
   }
 
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error('Email configuration incomplete: EMAIL_USER and EMAIL_PASS are required.');
+    throw new Error(
+      "Email configuration incomplete: EMAIL_USER and EMAIL_PASS are required."
+    );
   }
 };
 
@@ -14,10 +16,11 @@ const validateEmailConfig = () => {
 const createTransporter = async () => {
   validateEmailConfig();
 
-  // Use Ethereal for testing
-  if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
+  // Ethereal for testing
+  if (process.env.EMAIL_HOST === "smtp.ethereal.email") {
     const testAccount = await nodemailer.createTestAccount();
-    return nodemailer.createTransport({
+
+    const transporter = nodemailer.createTransport({
       host: testAccount.smtp.host,
       port: testAccount.smtp.port,
       secure: testAccount.smtp.secure,
@@ -26,20 +29,37 @@ const createTransporter = async () => {
         pass: testAccount.pass,
       },
     });
+
+    await transporter.verify();
+    console.log("✅ Ethereal SMTP Connected");
+
+    return transporter;
   }
-  
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT || 587,
-    secure: process.env.EMAIL_SECURE === 'true',
+
+  const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_HOST || "smtp.gmail.com",
+    port: Number(process.env.EMAIL_PORT) || 587,
+    secure: process.env.EMAIL_SECURE === "true",
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
+
+    // Better timeout settings
+    connectionTimeout: 60000,
+    greetingTimeout: 60000,
+    socketTimeout: 60000,
   });
+
+  // Verify SMTP connection
+  await transporter.verify();
+
+  console.log("✅ SMTP Connected Successfully");
+
+  return transporter;
 };
 
-// Send email function
+// Send email
 export const sendEmail = async ({ to, subject, html, text }) => {
   try {
     const transporter = await createTransporter();
@@ -52,25 +72,23 @@ export const sendEmail = async ({ to, subject, html, text }) => {
       text,
     };
 
-    // Add timeout to prevent hanging
-    const info = await Promise.race([
-      transporter.sendMail(mailOptions),
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Email sending timeout')), 30000)
-      )
-    ]);
-    
-    console.log('Email sent successfully:', info.messageId);
-    
-    // For Ethereal testing, log the preview URL
-    if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
-      console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
+    const info = await transporter.sendMail(mailOptions);
+
+    console.log("✅ Email sent:", info.messageId);
+
+    if (process.env.EMAIL_HOST === "smtp.ethereal.email") {
+      console.log(
+        "📧 Preview URL:",
+        nodemailer.getTestMessageUrl(info)
+      );
     }
-    
+
     return info;
   } catch (error) {
-    console.error('Email sending failed:', error);
-    throw new Error(`Failed to send email: ${error.message}`);
+    console.error("❌ Email Error:");
+    console.error(error);
+
+    throw error;
   }
 };
 
@@ -79,53 +97,34 @@ export const sendContactConfirmation = async (contact) => {
   const html = `
     <!DOCTYPE html>
     <html>
-    <head>
-      <meta charset="utf-8">
-      <title>Thank you for contacting AQSS</title>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: #3b82f6; color: white; padding: 20px; text-align: center; }
-        .content { padding: 20px; background: #f9fafb; }
-        .footer { padding: 20px; text-align: center; color: #6b7280; font-size: 12px; }
-        .btn { display: inline-block; padding: 12px 24px; background: #3b82f6; color: white; text-decoration: none; border-radius: 5px; margin: 20px 0; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h1>Thank You for Contacting AQSS</h1>
-          <p>Advance Quality Service and Solution</p>
-        </div>
-        <div class="content">
-          <p>Dear ${contact.name},</p>
-          <p>Thank you for reaching out to us. We have received your inquiry and will get back to you within 24 hours.</p>
-          
-          <h3>Your Inquiry Details:</h3>
-          <ul>
-            <li><strong>Service Interest:</strong> ${contact.service}</li>
-            <li><strong>Message:</strong> ${contact.message}</li>
-          </ul>
-          
-          <p>For urgent matters, please call us at +91 87969 05471</p>
-          
-          <a href="tel:+918796905471" class="btn">Call Us Now</a>
-          
-          <p>Best regards,<br/>Team AQSS</p>
-        </div>
-        <div class="footer">
-          <p>Advance Quality Service and Solution (AQSS)</p>
-          <p>Email: aqssolution11@gmail.com | Phone: +91 87969 05471</p>
-          <p>Pune, Maharashtra, India</p>
-        </div>
-      </div>
-    </body>
+      <body style="font-family: Arial, sans-serif;">
+        <h2>Thank You for Contacting AQSS</h2>
+
+        <p>Dear <b>${contact.name}</b>,</p>
+
+        <p>
+          Thank you for contacting AQSS.
+          We have received your inquiry and will contact you shortly.
+        </p>
+
+        <hr>
+
+        <p><b>Service:</b> ${contact.service}</p>
+        <p><b>Message:</b> ${contact.message}</p>
+
+        <br>
+
+        <p>
+          Regards,<br>
+          AQSS Team
+        </p>
+      </body>
     </html>
   `;
 
-  await sendEmail({
+  return sendEmail({
     to: contact.email,
-    subject: 'Thank you for contacting AQSS',
+    subject: "Thank you for contacting AQSS",
     html,
   });
 };
