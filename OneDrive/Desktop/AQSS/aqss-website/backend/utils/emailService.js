@@ -60,7 +60,9 @@ const createTransporter = async () => {
 };
 
 // Send email
+
 export const sendEmail = async ({ to, subject, html, text }) => {
+  console.log("🔥 NEW EMAIL SERVICE VERSION LOADED");
   try {
     const transporter = await createTransporter();
 
