@@ -57,13 +57,10 @@ router.post('/', async (req, res) => {
       });
     } catch (emailError) {
       console.error('Failed to send email:', emailError);
-      const message = process.env.NODE_ENV === 'development'
-        ? emailError.message
-        : 'Failed to send email notification';
       return res.status(500).json({
         success: false,
-        message,
-        ...(process.env.NODE_ENV === 'development' && { details: emailError.stack }),
+        message: emailError.message || 'Failed to send email notification',
+        details: emailError.stack,
       });
     }
 
