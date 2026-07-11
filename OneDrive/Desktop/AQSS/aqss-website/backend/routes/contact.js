@@ -36,18 +36,21 @@ const contactSchema = Joi.object({
 router.post('/', async (req, res) => {
   try {
     // Validate request body
-    const { error, value } = contactSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation error',
-        errors: error.details.map(detail => ({
-          field: detail.path[0],
-          message: detail.message,
-        })),
-      });
-    }
+    console.log("Incoming Body:", req.body);
 
+const { error, value } = contactSchema.validate(req.body, {
+  abortEarly: false,
+});
+
+if (error) {
+  console.log("Joi Error:", error.details);
+
+  return res.status(400).json({
+    success: false,
+    message: "Validation error",
+    errors: error.details,
+  });
+}
     // Send email notification
     try {
       await sendEmail({
