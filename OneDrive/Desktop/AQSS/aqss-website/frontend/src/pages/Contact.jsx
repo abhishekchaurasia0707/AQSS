@@ -24,8 +24,8 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-  const apiEndpoint = 'https://aqss-production.up.railway.app/api/contact';
-
+   const apiEndpoint = 'https://aqss-production.up.railway.app/api/contact';
+  // const apiEndpoint = "http://localhost:5000/api/contact";
   useEffect(() => {
     console.log('[Contact] API Endpoint:', apiEndpoint);
   }, [apiEndpoint]);
@@ -102,76 +102,168 @@ const Contact = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
     
-    const newErrors = validateForm();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
+  //   const newErrors = validateForm();
+  //   if (Object.keys(newErrors).length > 0) {
+  //     setErrors(newErrors);
+  //     return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   setSubmitStatus(null);
+
+  //   try {
+  //     console.log('Submitting to:', apiEndpoint);
+  //     console.log('Form data:', formData);
+      
+  //     const controller = new AbortController();
+  //     const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
+      
+  //     const response = await fetch(apiEndpoint, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(formData),
+  //       signal: controller.signal,
+  //     });
+      
+  //     clearTimeout(timeoutId);
+
+  //     console.log('Response status:', response.status);
+  //     const data = await response.json();
+  //     console.log('Response data:', data);
+
+  //     if (data.success) {
+  //       setSubmitStatus({
+  //         type: 'success',
+  //         message: 'Thank you for contacting us! We will get back to you within 24 hours.',
+  //       });
+  //       setFormData({
+  //         name: '',
+  //         email: '',
+  //         phone: '',
+  //         company: '',
+  //         service: 'Other',
+  //         message: '',
+  //       });
+  //     } else {
+  //       setSubmitStatus({
+  //         type: 'error',
+  //         message: data.message || 'Something went wrong. Please try again.',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error('Submit error:', error);
+  //     if (error.name === 'AbortError') {
+  //       setSubmitStatus({
+  //         type: 'error',
+  //         message: 'Request timed out. Please try again.',
+  //       });
+  //     } else {
+  //       setSubmitStatus({
+  //         type: 'error',
+  //         message: 'Network error. Please check your connection and try again.',
+  //       });
+  //     }
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const newErrors = validateForm();
+
+  if (Object.keys(newErrors).length > 0) {
+    setErrors(newErrors);
+    return;
+  }
+
+  setIsSubmitting(true);
+  setSubmitStatus(null);
+
+  try {
+    console.log("Submitting to:", apiEndpoint);
+    console.log("Form Data:", formData);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
+
+    const response = await fetch(apiEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    const data = await response.json();
+
+    console.log("Status:", response.status);
+    console.log("Response:", data);
+
+    // Show backend validation errors
+    if (!response.ok) {
+      console.error("Validation Errors:", data.errors);
+
+      let errorMessage = data.message || "Something went wrong.";
+
+      if (data.errors && Array.isArray(data.errors)) {
+        errorMessage = data.errors
+          .map((err) => `${err.field}: ${err.message}`)
+          .join("\n");
+      }
+
+      setSubmitStatus({
+        type: "error",
+        message: errorMessage,
+      });
+
       return;
     }
 
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+    // Success
+    setSubmitStatus({
+      type: "success",
+      message:
+        "Thank you for contacting us! We will get back to you within 24 hours.",
+    });
 
-    try {
-      console.log('Submitting to:', apiEndpoint);
-      console.log('Form data:', formData);
-      
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
-      
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        signal: controller.signal,
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      company: "",
+      service: "Other",
+      message: "",
+    });
+
+    setErrors({});
+  } catch (error) {
+    console.error("Submit Error:", error);
+
+    if (error.name === "AbortError") {
+      setSubmitStatus({
+        type: "error",
+        message: "Request timed out. Please try again.",
       });
-      
-      clearTimeout(timeoutId);
-
-      console.log('Response status:', response.status);
-      const data = await response.json();
-      console.log('Response data:', data);
-
-      if (data.success) {
-        setSubmitStatus({
-          type: 'success',
-          message: 'Thank you for contacting us! We will get back to you within 24 hours.',
-        });
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          company: '',
-          service: 'Other',
-          message: '',
-        });
-      } else {
-        setSubmitStatus({
-          type: 'error',
-          message: data.message || 'Something went wrong. Please try again.',
-        });
-      }
-    } catch (error) {
-      console.error('Submit error:', error);
-      if (error.name === 'AbortError') {
-        setSubmitStatus({
-          type: 'error',
-          message: 'Request timed out. Please try again.',
-        });
-      } else {
-        setSubmitStatus({
-          type: 'error',
-          message: 'Network error. Please check your connection and try again.',
-        });
-      }
-    } finally {
-      setIsSubmitting(false);
+    } else {
+      setSubmitStatus({
+        type: "error",
+        message: error.message || "Network error. Please try again.",
+      });
     }
-  };
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="min-h-screen">
