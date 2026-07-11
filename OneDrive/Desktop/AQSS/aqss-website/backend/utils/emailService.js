@@ -52,7 +52,14 @@ export const sendEmail = async ({ to, subject, html, text }) => {
       text,
     };
 
-    const info = await transporter.sendMail(mailOptions);
+    // Add timeout to prevent hanging
+    const info = await Promise.race([
+      transporter.sendMail(mailOptions),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Email sending timeout')), 30000)
+      )
+    ]);
+    
     console.log('Email sent successfully:', info.messageId);
     
     // For Ethereal testing, log the preview URL
@@ -63,7 +70,7 @@ export const sendEmail = async ({ to, subject, html, text }) => {
     return info;
   } catch (error) {
     console.error('Email sending failed:', error);
-    throw new Error('Failed to send email');
+    throw new Error(`Failed to send email: ${error.message}`);
   }
 };
 

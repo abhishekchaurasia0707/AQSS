@@ -115,15 +115,26 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
+      console.log('Submitting to:', apiEndpoint);
+      console.log('Form data:', formData);
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 45000); // 45 second timeout
+      
       const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
 
+      console.log('Response status:', response.status);
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (data.success) {
         setSubmitStatus({
@@ -146,10 +157,17 @@ const Contact = () => {
       }
     } catch (error) {
       console.error('Submit error:', error);
-      setSubmitStatus({
-        type: 'error',
-        message: 'Network error. Please check your connection and try again.',
-      });
+      if (error.name === 'AbortError') {
+        setSubmitStatus({
+          type: 'error',
+          message: 'Request timed out. Please try again.',
+        });
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: 'Network error. Please check your connection and try again.',
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
