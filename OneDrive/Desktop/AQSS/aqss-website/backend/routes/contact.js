@@ -56,11 +56,10 @@ router.post('/', async (req, res) => {
         html: generateEmailTemplate(value),
       });
     } catch (emailError) {
-      console.error('Failed to send email:', emailError);
+      console.error('Failed to send email via Resend:', emailError);
       return res.status(500).json({
         success: false,
         message: emailError.message || 'Failed to send email notification',
-        details: emailError.stack,
       });
     }
 

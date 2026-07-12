@@ -1,76 +1,25 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-const validateEmailConfig = () => {
-  if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
-    return;
-  }
+const resend = new Resend(process.env.RESEND_API_KEY);
 
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    throw new Error('Email configuration incomplete: EMAIL_USER and EMAIL_PASS are required.');
-  }
-};
-
-// Create transporter
-const createTransporter = async () => {
-  validateEmailConfig();
-
-  // Use Ethereal for testing
-  if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
-    const testAccount = await nodemailer.createTestAccount();
-    return nodemailer.createTransport({
-      host: testAccount.smtp.host,
-      port: testAccount.smtp.port,
-      secure: testAccount.smtp.secure,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-  }
-  
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-    port: process.env.EMAIL_PORT || 587,
-    secure: process.env.EMAIL_SECURE === 'true',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
-};
-
-// Send email function
+// Send email function using Resend
 export const sendEmail = async ({ to, subject, html, text }) => {
   try {
-    const transporter = await createTransporter();
-
-    const mailOptions = {
-      from: `"AQSS" <${process.env.EMAIL_USER}>`,
-      to,
+    console.log('Sending email via Resend to:', to);
+    
+    const data = await resend.emails.send({
+      from: 'AQSS <onboarding@resend.dev>',
+      to: [to],
       subject,
       html,
       text,
-    };
-
-    // Add timeout to prevent hanging
-    const info = await Promise.race([
-      transporter.sendMail(mailOptions),
-      new Promise((_, reject) => 
-        setTimeout(() => reject(new Error('Email sending timeout')), 30000)
-      )
-    ]);
+    });
     
-    console.log('Email sent successfully:', info.messageId);
-    
-    // For Ethereal testing, log the preview URL
-    if (process.env.EMAIL_HOST === 'smtp.ethereal.email') {
-      console.log('📧 Preview URL:', nodemailer.getTestMessageUrl(info));
-    }
-    
-    return info;
+    console.log('Email sent successfully via Resend:', data);
+    return data;
   } catch (error) {
-    console.error('Email sending failed:', error);
-    throw new Error(`Failed to send email: ${error.message}`);
+    console.error('Email sending failed via Resend:', error);
+    throw new Error(`Failed to send email via Resend: ${error.message}`);
   }
 };
 
