@@ -217,7 +217,10 @@ const Contact = () => {
 
       if (data.errors && Array.isArray(data.errors)) {
         errorMessage = data.errors
-          .map((err) => `${err.field}: ${err.message}`)
+          .map((err) => {
+            const fieldName = err.path ? err.path.join('.') : (err.field || 'Error');
+            return `${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}: ${err.message.replace(/"/g, '')}`;
+          })
           .join("\n");
       }
 
