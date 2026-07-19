@@ -24,7 +24,7 @@ const Contact = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
-   const apiEndpoint = 'https://aqss-production.up.railway.app/api/contact';
+   const apiEndpoint = 'https://api.aqssolutions.com/api/contact';
   // const apiEndpoint = "http://localhost:5000/api/contact";
   useEffect(() => {
     console.log('[Contact] API Endpoint:', apiEndpoint);
